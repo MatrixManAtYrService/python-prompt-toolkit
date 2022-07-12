@@ -58,6 +58,9 @@ class ViState:
         #: The Vi mode that gets applied when reset() is called
         self.default_input_mode = InputMode.INSERT
 
+        #: Prevent input modes not listed here
+        self.allowed_input_modes = list(InputMode)
+
         #: Waiting for digraph.
         self.waiting_for_digraph = False
         self.digraph_symbol1: Optional[str] = None  # (None or a symbol.)
@@ -92,7 +95,8 @@ class ViState:
             self.operator_func = None
             self.operator_arg = None
 
-        self.__input_mode = value
+        if value in self.allowed_input_modes:
+            self.__input_mode = value
 
     def reset(self) -> None:
         """
